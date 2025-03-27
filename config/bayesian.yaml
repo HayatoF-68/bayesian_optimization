@@ -1,0 +1,63 @@
+OUTPUT_DIR: "output"
+DEBUG_RUN: false
+FONTSIZE: 15
+MOT:
+  REID_MODEL_OPTS: "models/resnet50_mixstyle/opts.yaml"
+  REID_MODEL_CKPT: "models/resnet50_mixstyle/net_19.pth"
+  REID_FP16: false
+  REID_BATCHSIZE: 1
+  DETECTOR: "yolov5x6"
+  TRACKER: "bytetrack_iou"
+  MIN_FRAMES: 5
+  SHOW: false
+  VIDEO_OUTPUT: false
+  STATIC_ATTRIBUTES:
+    - color: "models/color_svm.pkl"
+    - type: "models/type_svm.pkl"
+  ATTRIBUTE_INFER_BATCHSIZE: 1
+  REFINE: false
+MTMC:
+  CAMERA_LAYOUT: 'config/bayesian_camera_layout.txt'
+  LINKAGE: 'average'
+  MIN_SIM: 0.5
+EXPRESS:
+  FINAL_VIDEO_OUTPUT: false
+  CAMERAS:
+    - "video": "datasets/camera1/video.avi"
+      "detection_mask": "datasets/camera1/white_image.jpg"
+      "calibration": "datasets/camera1/calibration.txt"
+    - "video": "datasets/camera2/video.avi"
+      "detection_mask": "datasets/camera2/white_image.jpg"
+      "calibration": "datasets/camera2/calibration.txt"
+    - "video": "datasets/camera3/video.avi"
+      "detection_mask": "datasets/camera3/white_image.jpg"
+      "calibration": "datasets/camera3/calibration.txt"
+    - "video": "datasets/camera4/video.avi"
+      "detection_mask": "datasets/camera4/white_image.jpg"
+      "calibration": "datasets/camera4/calibration.txt"
+    - "video": "datasets/camera5/video.avi"
+      "detection_mask": "datasets/camera5/white_image.jpg"
+      "calibration": "datasets/camera5/calibration.txt"
+    - "video": "datasets/camera6/video.avi"
+      "detection_mask": "datasets/camera6/white_image.jpg"
+      "calibration": "datasets/camera6/calibration.txt"
+    - "video": "datasets/camera7/video.avi"
+      "detection_mask": "datasets/camera7/white_image.jpg"
+      "calibration": "datasets/camera7/calibration.txt"
+    - "video": "datasets/camera8/video.avi"
+      "detection_mask": "datasets/camera8/white_image.jpg"
+      "calibration": "datasets/camera8/calibration.txt"
+
+EVAL:
+  MIN_IOU: 0.35
+  IGNORE_FP: true
+  DROP_SINGLE_CAM: False
+  GROUND_TRUTHS:
+    - "datasets/camera1/gt.txt"
+    - "datasets/camera2/gt.txt"
+    - "datasets/camera3/gt.txt"
+    - "datasets/camera4/gt.txt"
+    - "datasets/camera5/gt.txt"
+    - "datasets/camera6/gt.txt"
+    - "datasets/camera7/gt.txt"
+    - "datasets/camera8/gt.txt"
