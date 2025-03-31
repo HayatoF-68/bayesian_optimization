@@ -50,32 +50,33 @@ awsimProjectRootPath = "/home/fujii/Documents/Projects/bayes-arrangement"
 unityBinaryPath = "/home/fujii/Unity/Hub/Editor/2021.1.7f1/Editor/Unity"
 save_dir = "/home/fujii/Documents/Projects/bayesian_optimization-master/bayesian_optimization/output"
 
-# TODO 読み込むpthファイルの指定（数字部分を変更）
+# TODO 読み込むpthファイルの指定（数字部分を手動で変更）
 if os.path.exists(os.path.join(save_dir, "x_suggest_31.pth")):
     x_suggest = torch.load(os.path.join(save_dir, "x_suggest_31.pth"))
 
-# else:
-#     bounds = torch.tensor([
-#         [-60.0, -4.0, -60.0, 0.0, -180.0, 10.0, -60.0, -4.0, -60.0, 0.0, -180.0, 10.0,-60.0, -4.0, -60.0, 0.0, -180.0, 10.0, -60.0, -4.0, -60.0, 0.0, -180.0, 10.0],
-#         [60.0, 0.0, 60.0, 30.0, 180.0, 30.0, 60.0, 0.0, 60.0, 30.0, 180.0, 30.0,60.0, 0.0, 60.0, 30.0, 180.0, 30.0, 60.0, 0.0, 60.0, 30.0, 180.0, 30.0]
-#         ], dtype=torch.float32)
-#     # 条件を満たすサンプルを生成
-#     callable_object = CallableObject()
-#     x_suggest_list = []
-#     # ランダムサンプリング
-#     while len(x_suggest_list) < 2:
-#         # 各次元ごとにランダムサンプリング
-#         x_random = bounds[0] + (bounds[1] - bounds[0]) * torch.rand(1, bounds.shape[1])
-#         # callable_object の条件を満たすかをチェック
-#         if callable_object(x_random) >= 0:
-#             x_suggest_list.append(x_random)
-#     x_suggest = torch.cat(x_suggest_list, dim=0)
-
+# 境界条件を満たす初期サンプルを生成
 else:
+    bounds = torch.tensor([
+        [-60.0, -4.0, -60.0, 0.0, -180.0, 10.0, -60.0, -4.0, -60.0, 0.0, -180.0, 10.0,-60.0, -4.0, -60.0, 0.0, -180.0, 10.0, -60.0, -4.0, -60.0, 0.0, -180.0, 10.0],
+        [60.0, 0.0, 60.0, 30.0, 180.0, 30.0, 60.0, 0.0, 60.0, 30.0, 180.0, 30.0,60.0, 0.0, 60.0, 30.0, 180.0, 30.0, 60.0, 0.0, 60.0, 30.0, 180.0, 30.0]
+        ], dtype=torch.float32)
+    # 条件を満たすサンプルを生成
+    callable_object = CallableObject()
+    x_suggest_list = []
+    # ランダムサンプリング
+    while len(x_suggest_list) < 2:
+        # 各次元ごとにランダムサンプリング
+        x_random = bounds[0] + (bounds[1] - bounds[0]) * torch.rand(1, bounds.shape[1])
+        # callable_object の条件を満たすかをチェック
+        if callable_object(x_random) >= 0:
+            x_suggest_list.append(x_random)
+    x_suggest = torch.cat(x_suggest_list, dim=0)
+
+#else:
     #ベストスコア(192周目)
     #x_suggest = torch.tensor([[11.81876,-1.82564,50.40118,3.40359,-133.49689,12.12846,12.16882,-1.24480,-20.33683,5.27910,24.50269,23.46427,-18.15512,-0.49771,-56.68274,22.27353,51.96133,28.99672,47.20786,-1.61435,20.80215,24.77179,-159.88277,22.24188],[11.81876,-1.82564,50.40118,3.40359,-133.49689,12.12846,12.16882,-1.24480,-20.33683,5.27910,24.50269,23.46427,-18.15512,-0.49771,-56.68274,22.27353,51.96133,28.99672,47.20786,-1.61435,20.80215,24.77179,-159.88277,22.24188]])
     #1周目
-    x_suggest = torch.tensor([[23.49128,-3.05251,-11.69620,3.73720,-146.98679,28.80864,47.09251,-3.61613,28.41834,3.80008,-176.60133,28.37472,31.78236,-0.68584,-11.46286,21.87878,-30.46082,18.87181,-17.18087,-2.57414,37.08733,24.59307,87.61929,24.83850],[-36.96875,-0.11099,-13.56612,20.70624,104.20670,29.82711,-36.96875,-0.11099,-13.56612,20.70624,104.20670,29.82711,34.02129,-2.26731,-12.62063,12.74348,-160.73717,15.64807,34.02129,-2.26731,-12.62063,12.74348,-160.73717,15.64807]])
+    #x_suggest = torch.tensor([[23.49128,-3.05251,-11.69620,3.73720,-146.98679,28.80864,47.09251,-3.61613,28.41834,3.80008,-176.60133,28.37472,31.78236,-0.68584,-11.46286,21.87878,-30.46082,18.87181,-17.18087,-2.57414,37.08733,24.59307,87.61929,24.83850],[-36.96875,-0.11099,-13.56612,20.70624,104.20670,29.82711,-36.96875,-0.11099,-13.56612,20.70624,104.20670,29.82711,34.02129,-2.26731,-12.62063,12.74348,-160.73717,15.64807,34.02129,-2.26731,-12.62063,12.74348,-160.73717,15.64807]])
     #x_suggest = torch.tensor([[16.34413,-1.97546,-24.25388,23.21188,-59.05220,13.41623,-14.07741,-3.15594,52.62189,7.96958,161.56049,21.11538,-14.89391,-0.84543,-17.22018,8.36512,89.19284,27.48003,10.24940,-3.11311,-10.62706,10.63922,73.39537,25.11854],[16.34413,-1.97546,-24.25388,23.21188,-59.05220,13.41623,-14.07741,-3.15594,52.62189,7.96958,161.56049,21.11538,-14.89391,-0.84543,-17.22018,8.36512,89.19284,27.48003,10.24940,-3.11311,-10.62706,10.63922,73.39537,25.11854]])
     #ベストスコア(24周目)　01234567>00234567
     #x_suggest = torch.tensor([[-13.82111,-2.43049,45.40679,16.86851,-139.60043,21.16823,-13.82111,-2.43049,45.40679,16.86851,-139.60043,21.16823,-16.14295,-3.63421,-29.26904,6.51583,71.33745,12.05106,-16.97007,-3.57683,-24.33042,14.65077,49.81635,16.50722],[-13.82111,-2.43049,45.40679,16.86851,-139.60043,21.16823,55.18008,-2.77013,-19.29512,12.30482,-30.61313,24.99692,-16.14295,-3.63421,-29.26904,6.51583,71.33745,12.05106,-16.97007,-3.57683,-24.33042,14.65077,49.81635,16.50722]])
@@ -94,10 +95,13 @@ else:
     #74 13.565391540527344,-2.7527554035186768,-13.855083465576172,19.186317443847656,48.288665771484375,11.988805770874023,-22.16710662841797,-1.5087900161743164,-19.484580993652344,16.085105895996094,72.88003540039062,15.790003776550293,-16.41055679321289,-3.823078155517578,58.910682678222656,11.101909637451172,122.21856689453125,28.99325180053711,-48.110008239746094,-0.6138172149658203,-13.886981964111328,29.180883407592773,-12.040451049804688,15.427323341369629
 
 
-
+#ベイズ最適化の変数を引き継ぎor新しく生成
 #x_suggest = torch.load(os.path.join(save_dir, "x_suggest_36.pth")) if os.path.exists(os.path.join(save_dir, "x_suggest_36.pth")) else torch.tensor([[12.75,-4,-53.5,-0.9,-28.61,12.07,-55.12,-4,20,11,15.6,21.3,54.38,-4,23.23,5.9,-130.21,26.1,-14.3,-4,57.5,5.5,147.13,14.99],[-22.2,0,-27.17,7.5,22.8,30,19.3,0,-19.3,9.62,-51.14,30,-11.3,-4,35.53,12.8,32.1,10,17.27,0,21.91,7.5,-158.4,30]])
+#実験条件
 train_x = torch.load(os.path.join(save_dir, "train_x_29.pth")) if os.path.exists(os.path.join(save_dir, "train_x_29.pth")) else torch.tensor([[]])
+#マルチトラッキングスコア
 train_y = torch.load(os.path.join(save_dir, "train_y_29.pth")) if os.path.exists(os.path.join(save_dir, "train_y_29.pth")) else torch.tensor([[]])
+#4つの単スコア
 train_y_1 = torch.load(os.path.join(save_dir, "train_y_1_29.pth")) if os.path.exists(os.path.join(save_dir, "train_y_1_29.pth")) else torch.tensor([[]])
 train_y_2 = torch.load(os.path.join(save_dir, "train_y_2_29.pth")) if os.path.exists(os.path.join(save_dir, "train_y_2_29.pth")) else torch.tensor([[]])
 train_y_3 = torch.load(os.path.join(save_dir, "train_y_3_29.pth")) if os.path.exists(os.path.join(save_dir, "train_y_3_29.pth")) else torch.tensor([[]])
@@ -123,7 +127,7 @@ output_file = os.path.join(save_path, "process_times.txt")
 with open(output_file, "w") as f:
     f.write('Cycle,Step1,Step2,Step3,Step4\n')
 
-"""
+
 for i in range(300):
     # Set export directory
     # bayes_util.GenerateScriptToSetExportDirectory( awsimProjectRootPath, "trial_"+str(i))
@@ -195,6 +199,7 @@ for i in range(300):
     pathes2 = [path26, path27, path1, path2, path3, path4, path5, path6, path7, path8, path9, path10, path11, path12, path13, path14, path15, path16, path17, path18, path19, path20, path21, path22, path23, path24, path25]
 
 
+    #外部から操作のために権限を変更
     for path in pathes2:
         subprocess.call(["sudo", "chown", "fujii:fujii", path])
 
@@ -256,6 +261,7 @@ for i in range(300):
         _, single_score = run_mot(mot_conf)
         single_score_list.append(single_score)
     print(f"single_score: {single_score_list}")
+    #単スコアの大きい順に6つ分ソート
     top_6_ids = sorted(range(len(single_score_list)), key=lambda j: single_score_list[j], reverse=True)[:6]
     print(f"top_6_ids: {top_6_ids}")
     pickle_paths = [os.path.join(path, f"{MOT_OUTPUT_NAME}.pkl") for path in cam_dirs]
@@ -265,9 +271,11 @@ for i in range(300):
 
     log.info("Express: Running MOT on all cameras finished. Running MTMC...")
 
+    #上位6つから4つ選ぶ組み合わせを全て取得
     combinations = list(itertools.combinations(top_6_ids, 4))
     print(f"combinations: {combinations}")
 
+    #各々の組み合わせに対してMCMOTを実行
     for combo in combinations:
         combo = tuple(random.sample(combo, len(combo)))
         print(f"combo: {combo}")
@@ -289,6 +297,7 @@ for i in range(300):
         if all_ground_truths_empty or all_predictions_empty:
             score = 0
         else:
+            #MCMOTのメイン処理
             mtracks = run_mtmc(mtmc_cfg)
             log.info("Express: Running MTMC on all cameras finished. Saving final results ...")
 
@@ -314,6 +323,7 @@ for i in range(300):
             #         log.info(f"Express: video {j} saved.")
 
 
+            #スコアリング(評価)の工程
             if len(cfg.EVAL.GROUND_TRUTHS) == 0:
                 log.info("Ground truths are not provided for evaluation, terminating.")
 
@@ -325,6 +335,7 @@ for i in range(300):
             mtmc_cfg.defrost()
             mtmc_cfg.EVAL.PREDICTIONS = final_txt_paths
             mtmc_cfg.freeze()
+            #評価の実行
             score = run_evaluation(mtmc_cfg)
 
         if score:
@@ -333,6 +344,7 @@ for i in range(300):
             log.error("Evaluation unsuccessful: probably EVAL config had some errors.")
 
 
+        #ベイズ最適化の新しい入力データの作成
         x_test=[]
         for k,l in enumerate(combo):
             if k==0:
@@ -373,6 +385,7 @@ for i in range(300):
                 elif l==7: x_test[18:] = x_suggest[-2][18:]
 
         print(f"x_test: {x_test}")
+        #ベイズ最適化の既存の入力データに新しいデータを追加
         train_x = torch.cat((train_x, torch.tensor([x_test])), dim=0) if train_x.size(1) > 0 else torch.tensor([x_test])
         print(f"train_x.shape: {train_x.shape}")
         with open(os.path.join(save_dir, now, "x_test.txt"), "a") as f:
@@ -384,15 +397,18 @@ for i in range(300):
             f.write("\n")
 
         print(f"score: {score}")
+        #ベイズ最適化の既存の目的関数（マルチトラッキングスコア）に新しいデータを追加
         train_y = torch.cat((train_y, torch.tensor([[score]])), dim=0) if train_y.size(1) > 0 else torch.tensor([[score]])
         print(f"train_y.shape: {train_y.shape}")
         with open(os.path.join(save_dir, now, "score.txt"), "a") as f:
             f.write(str(i+1)+":"+str(combo)+":"+str(score)+"\n")
 
+        #単スコアの取得
         single_score_1 = single_score_list[combo[0]] if isinstance(single_score_list, list) else 0
         single_score_2 = single_score_list[combo[1]] if isinstance(single_score_list, list) else 0
         single_score_3 = single_score_list[combo[2]] if isinstance(single_score_list, list) else 0
         single_score_4 = single_score_list[combo[3]] if isinstance(single_score_list, list) else 0
+        #ベイズ最適化の既存の目的関数（単スコア）に新しいデータを追加
         train_y_1 = torch.cat((train_y_1, torch.tensor([[single_score_1]])), dim=0) if train_y_1.size(1) > 0 else torch.tensor([[single_score_1]])
         train_y_2 = torch.cat((train_y_2, torch.tensor([[single_score_2]])), dim=0) if train_y_2.size(1) > 0 else torch.tensor([[single_score_2]])
         train_y_3 = torch.cat((train_y_3, torch.tensor([[single_score_3]])), dim=0) if train_y_3.size(1) > 0 else torch.tensor([[single_score_3]])
@@ -416,16 +432,19 @@ for i in range(300):
     start_time = time.time()
 
 
+    #!入力データの標準化（操作が雑かも，検討の余地あり）
     bounds_min = torch.tensor([-60.0, -4.0, -60.0, 0.0, -180.0, 10.0, -60.0, -4.0, -60.0, 0.0, -180.0, 10.0,-60.0, -4.0, -60.0, 0.0, -180.0, 10.0, -60.0, -4.0, -60.0, 0.0, -180.0, 10.0])
     bounds_max = torch.tensor([60.0, 0.0, 60.0, 30.0, 180.0, 30.0, 60.0, 0.0, 60.0, 30.0, 180.0, 30.0,60.0, 0.0, 60.0, 30.0, 180.0, 30.0, 60.0, 0.0, 60.0, 30.0, 180.0, 30.0])
     train_x_scaled = (train_x - bounds_min) / (bounds_max - bounds_min)
 
+    #多目的最適化の準備
     i0 = torch.zeros(train_x.shape[0], 1)
     i1 = torch.ones(train_x.shape[0], 1)
     i2 = 2 * torch.ones(train_x.shape[0], 1)
     i3 = 3 * torch.ones(train_x.shape[0], 1)
     i4 = 4 * torch.ones(train_x.shape[0], 1)
 
+    #!多目的最適化の枠組みにおける入力データの作成（単カメラの入力データが雑．次元を合わせるために単に4倍している．検討の余地あり）
     x_multi = torch.cat([
         torch.cat([train_x_scaled, i0], dim=-1),
         torch.cat([torch.cat([train_x_scaled[:, :6]]*4,dim=1), i1], dim=-1),
@@ -433,10 +452,12 @@ for i in range(300):
         torch.cat([torch.cat([train_x_scaled[:, 12:18]]*4, dim=1), i3], dim=-1),
         torch.cat([torch.cat([train_x_scaled[:, 18:]]*4, dim=1), i4], dim=-1),
         ], dim=0)
+    #多目的最適化の枠組みにおける目的関数の作成
     y_multi = torch.cat([train_y, train_y_1, train_y_2, train_y_3, train_y_4])
     print(f"x_multi.shape: {x_multi.shape}")
     print(f"y_multi.shape: {y_multi.shape}")
 
+    #!計算の便宜上逆行列にノイズを入れる．入れないと動かないので入れたが操作としてはあまり理解できていない．検討の余地あり．
     with gpytorch.settings.cholesky_jitter(1e-3):
         dim = x_multi.shape[-1] - 1  # 入力次元数（タスク情報を除く）
         #print(f"dim: {dim}")
@@ -499,6 +520,7 @@ for i in range(300):
 
         batch_initial_conditions = torch.empty(0, 1, 24, requires_grad=True)
 
+        #多目的最適化を行うための儀式
         while batch_initial_conditions.size(0) < num_restarts:
             batch_initial_condition = generate_initial_condition()
             if callable_object_standard(batch_initial_condition) >= torch.tensor(0):
@@ -535,6 +557,7 @@ for i in range(300):
         #batch_initial_conditions = (batch_initial_conditions - bounds_min) / (bounds_max - bounds_min)
 
 
+        #新しい配置候補の出力
         x_next, acq_value = optimize_acqf(
             qEHVI,
             bounds=bounds,
@@ -544,6 +567,7 @@ for i in range(300):
             batch_initial_conditions=batch_initial_conditions,
         )
 
+    #新しい配置候補の出力を元のスケールに戻す
     x_next = x_next * (bounds_max - bounds_min) + bounds_min
 
     x_suggest = torch.cat((x_suggest, x_next))
@@ -584,8 +608,6 @@ for i in range(300):
 
     with open(output_file, "a") as f:
         f.write(f'{i},{step1_time:.4f},{step2_time:.4f},{step3_time:.4f},{step4_time:.4f}\n')
-
-"""
 
 
 """
@@ -763,9 +785,8 @@ gp_4 = SingleTaskGP(torch.cat([train_x[:, 18:]] * 4, dim=1), train_y_4, input_tr
 model = ModelListGP(gp, gp_1, gp_2, gp_3, gp_4)
 mll = SumMarginalLogLikelihood(model.likelihood, model)
 fit_gpytorch_model(mll)
-"""
 
-"""
+
 train_y = torch.tensor([[0.48378123635026093],[0.5099057614050118],[0.38811120832118207],[0.49696131801031135],[0.36051245740585036],[0.42181986323039106],[0.45015281957957115]])
 train_y_1 = torch.tensor([[0.21452691061953],[0.14123480914395847],[0.17281573448661255],[0.19435323598029897],[0.09058171438686552],[0.18338565622642428],[0.210568062521871]])
 train_y_2 = torch.tensor([[0.21452691061953],[0.14123480914395847],[0.17281573448661255],[0.19435323598029897],[0.09058171438686552],[0.18338565622642428],[0.210568062521871]])
@@ -773,6 +794,8 @@ train_y_3 = torch.tensor([[0.21452691061953],[0.14123480914395847],[0.1728157344
 train_y_4 = torch.tensor([[0.21452691061953],[0.14123480914395847],[0.17281573448661255],[0.19435323598029897],[0.09058171438686552],[0.18338565622642428],[0.210568062521871]])
 """
 
+
+#天候条件を変える場合のコード
 # for i in range(300):
 #     # Set export directory
 #     # bayes_util.GenerateScriptToSetExportDirectory( awsimProjectRootPath, "trial_"+str(i))
@@ -1371,7 +1394,7 @@ train_y_4 = torch.tensor([[0.21452691061953],[0.14123480914395847],[0.1728157344
 #         f.write(str(step4_time)+"\n")
 
 
-
+"""
 #ランダム配置
 for i in range(300):
     # Set export directory
@@ -1387,6 +1410,7 @@ for i in range(300):
     volumeFile = awsimProjectRootPath + "/Assets/AWSIM/Prefabs/Environments/Nishishinjuku/Volume Profile.asset"
     autowareFile = awsimProjectRootPath + "/Assets/AWSIM/Scenes/Main/AutowareSimulation.unity"
 
+    # データを格納するリストを作成
     step1_time_list = []
     step2_time_list = []
     step3_time_list = []
@@ -1396,6 +1420,7 @@ for i in range(300):
     score_average_array = []
     x_test_array = [[] for _ in range(15)]
 
+    # あるシード値で実行（値が1の場合，2以上なら複数のシード値を指定可）
     for j in range(1):
         # Build a player with the specified camera paraemters
         # ref: https://docs.unity3d.com/ja/2018.4/Manual/CommandLineArguments.html
@@ -1456,6 +1481,7 @@ for i in range(300):
         pathes = [path1, path2, path3, path4, path5, path6, path7, path8, path9, path10, path11, path12, path13, path14, path15, path16, path17, path18, path19, path20, path21, path22, path23, path24, path25, path26, path27]
         pathes2 = [path26, path27, path1, path2, path3, path4, path5, path6, path7, path8, path9, path10, path11, path12, path13, path14, path15, path16, path17, path18, path19, path20, path21, path22, path23, path24, path25]
 
+        # ファイルの権限変更（外部から操作するため）
         for path in pathes2:
             subprocess.call(["sudo", "chown", "fujii:fujii", path])
 
@@ -1471,6 +1497,8 @@ for i in range(300):
         step1_time_list.append(step1_time)
         start_time = time.time()
 
+
+        #以下MCMOTのプロセス
         args = parse_args("Express MTMC: run MOT on all cameras and then MTMC.")
         cfg = get_cfg_defaults()
 
@@ -1581,6 +1609,7 @@ for i in range(300):
                 mtmc_cfg.defrost()
                 mtmc_cfg.EVAL.PREDICTIONS = final_txt_paths
                 mtmc_cfg.freeze()
+                # MCMOTのメインプロセス
                 score = run_evaluation(mtmc_cfg)
                 score_array[k].append(score)
                 print(f"score: {score}")
@@ -1592,6 +1621,7 @@ for i in range(300):
             single_score_array[k][j].append(single_score_list[combo[3]] if isinstance(single_score_list, list) else 0)
             print(f"single_score_array: {single_score_array}")
 
+            # ベイズ最適化の入力データを組み合わせ分作成
             for l,m in enumerate(combo):
                 if l==0:
                     if m==0: x_test_array[k][:6] = x_suggest[-1][:6]
@@ -1643,6 +1673,7 @@ for i in range(300):
             f.write(str(i+1)+ "," + ",".join(map(str, combo)) + "," +",".join(map(str, x_test_values)))
             f.write("\n")
 
+    # ベイズ最適化の(歴代)入力データに新しい実験条件を結合
     train_x = torch.cat((train_x, torch.tensor(x_test_array)), dim=0) if train_x.size(1) > 0 else torch.tensor(x_test_array)
     print(f"train_x.shape: {train_x.shape}")
     print(f"train_x: {train_x}")
@@ -1658,6 +1689,7 @@ for i in range(300):
             f.write(str(i+1)+ "," + ",".join(map(str, combo)) + "," +",".join(map(str, score_list))+","+str(score_avarage))
             f.write("\n")
 
+    # ベイズ最適化の各々目的関数に新しい実験結果を結合
     train_y = torch.cat((train_y, torch.tensor(score_average_array).float().view(15, 1)), dim=0) if train_y.size(1) > 0 else torch.tensor(score_average_array).float().view(15, 1)
     print(f"train_y.shape: {train_y.shape}")
     print(f"train_y: {train_y}")
@@ -1665,7 +1697,7 @@ for i in range(300):
 
     for q in range(15):
         for p in range(4):
-            # 各 15 の要素の「3つの値」の平均を計算
+            # 各 15 の要素の「3つの値」の平均を計算（天候など条件を変える場合に，各条件の平均値をスコアとして採用するため）
             avg = sum(single_score_array[q][r][p] for r in range(1))
             single_score_average_array[p].append(avg)
     print(f"single_score_average_array: {single_score_average_array}")
@@ -1683,6 +1715,7 @@ for i in range(300):
             f.write(",".join(map(str, row)))
             f.write("\n")
 
+    #新しい単スコアをベイズ最適化の各々の目的関数に結合
     train_y_1 = torch.cat((train_y_1, torch.tensor(single_score_average_array[0]).float().view(15, 1)), dim=0) if train_y_1.size(1) > 0 else torch.tensor(single_score_average_array[0]).float().view(15, 1)
     train_y_2 = torch.cat((train_y_2, torch.tensor(single_score_average_array[1]).float().view(15, 1)), dim=0) if train_y_2.size(1) > 0 else torch.tensor(single_score_average_array[1]).float().view(15, 1)
     train_y_3 = torch.cat((train_y_3, torch.tensor(single_score_average_array[2]).float().view(15, 1)), dim=0) if train_y_3.size(1) > 0 else torch.tensor(single_score_average_array[2]).float().view(15, 1)
@@ -1699,6 +1732,7 @@ for i in range(300):
     step3_time_list.append(step3_time)
     start_time = time.time()
 
+    #パラメータの上限下限
     bounds = torch.tensor([
         [-60.0, -4.0, -60.0, 0.0, -180.0, 10.0, -60.0, -4.0, -60.0, 0.0, -180.0, 10.0,-60.0, -4.0, -60.0, 0.0, -180.0, 10.0, -60.0, -4.0, -60.0, 0.0, -180.0, 10.0],
         [60.0, 0.0, 60.0, 30.0, 180.0, 30.0, 60.0, 0.0, 60.0, 30.0, 180.0, 30.0,60.0, 0.0, 60.0, 30.0, 180.0, 30.0, 60.0, 0.0, 60.0, 30.0, 180.0, 30.0]
@@ -1746,4 +1780,6 @@ for i in range(300):
             f.write(str(step1_time_list[j])+","+str(step2_time_list[j])+","+str(step3_time_list[j])+",")
         #f.write(str(step3_time_list[3])+",")
         f.write(str(step4_time)+"\n")
+
+"""
 
